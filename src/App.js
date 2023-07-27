@@ -1,25 +1,27 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from 'react';
+import { Header } from './Header';
+import { Main } from './Main';
+import { Footer } from './Footer';
 
-function App() {
+export default function App() {
+  const storedItems = JSON.parse(localStorage.getItem('items')) || [];
+  const [items, setItems] = useState(storedItems);
+  const numberOfItems = items.length;
+  const packedItems = items.filter(item => item.packed).length;
+
+  function addItem(item) {
+    setItems(items => [...items, item]);
+  }
+
+  useEffect(() => {
+    localStorage.setItem('items', JSON.stringify(items));
+  }, [items]);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Header onAddItem={addItem} />
+      <Main items={items} setItems={setItems} />
+      <Footer numberOfItems={numberOfItems} packedItems={packedItems} />
+    </>
   );
 }
-
-export default App;
