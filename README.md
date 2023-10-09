@@ -67,7 +67,7 @@ npm start
 2. To build the project:
 
 ```
-npm build
+npm run build
 ```
 
 ## Contributing
